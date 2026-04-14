@@ -343,23 +343,26 @@ Spectra(DataFrame(hd))
 
 ![](fig/frag.png)
 ```{r, eval=FALSE}
+#library(PSMatch)
 calculateFragments("THSQEEMQHMQR")
 ```
 
 ### Quiz 3 (GA_6)
-Visit `gosocrative.com` and enter room name `FIN2025`
+Visit `gosocrative.com` and enter room name `FIN202`
 
 ## Working with msdata and an examplary mzID file
-```{r, eval=FALSE}
+```{r}
 library(PSMatch)
 library(msdata)
 
-ident()
+ident() # Restart R session if it is empty object
 idf <- ident(full.names = TRUE)
 basename(idf)
 # PSM when we can match a spectrum to a peptide using a Search engine software (third-party software) such as Mascot, PD, Sage, MaxQuant, SAGE (https://sage-docs.vercel.app/docs), etc.
 # The standard format to read the output of search engine is mzIdentML(mzid) file.
 id <- PSM(idf)
+# saveRDS(id, file = "psm_object_msdata_ident.rds")
+# id <- readRDS("psm_object_msdata_ident.rds")
 dim(id)
 
 names(id)
@@ -370,13 +373,15 @@ head(id$sequence)
 head(id$DatabaseAccess)
 ```
 
-```{r, eval=FALSE}
-## Ex1- Verify that this table contains 5802 matches for 5343 scans and 4938 peptides sequences.
+```{r}
+## Ex1- Verify that this table contains 5802 matches for 5343 scans and 4938 peptides sequences and 3148 proteins.
 names(id)
 
 length(unique(id$spectrumID))
 length(unique(id$sequence))
 length(unique(id$DatabaseAccess))
+
+library(tibble)
 
 as.data.frame(id) |>
     as_tibble() |>
@@ -385,17 +390,42 @@ as.data.frame(id) |>
 ```
 
 ## Decoy set understanding
-```{r, eval=FALSE}
+```{r}
 ## Target: protein.fasta -> peptide
 ## Decoy:  reverse protein.fasta -> peptide
-## One of the benefit of the Reverse peptide as a decoy set is that the probability of pair of a.a. are same as the target set.
+## One of the benefit of the Reverse peptide set as a decoy set is that the probability of pair of a.a. are same as the target set.
 
 table(id$isDecoy)
 
 head(id$DatabaseAccess)
 head(id$isDecoy)
 
+library(ggplot2)
+
+df <- data.frame(
+  score = id$MS.GF.RawScore,
+  type = ifelse(id$isDecoy, "Decoy", "Target")
+)
+
+ggplot(df, aes(score, color = type, fill = type)) +
+  geom_density(alpha = 0.25, linewidth = 1) +
+  scale_color_manual(values = c(Decoy = "red", Target = "blue")) +
+  scale_fill_manual(values = c(Decoy = "red", Target = "blue")) +
+  labs(title = "MS.GF Score Density", x = "Score", y = "Density") +
+  theme_minimal()
+```
+In summary, two key assumptions must be satisfied:
+
+Assumption 1: Decoy PSMs provide an accurate model of incorrect target matches, meaning the score distributions of decoy hits and false target hits are equivalent.
+
+Assumption 2: When target and decoy databases are of equal size, any incorrect (random) match is equally likely to be assigned to a target or a decoy sequence.
+
+
+## Enzyme digestion
+```{r}
 rTinyPro <-"LAAGKVEDSD" 
+
+library(cleaver)
 cleave(rTinyPro, "trypsin")
 cleavageRanges(rTinyPro, "trypsin")
 cleavageSites(rTinyPro, "trypsin")
