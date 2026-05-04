@@ -12,33 +12,33 @@ https://bioconductor.org/packages/release/BiocViews.html#___Proteomics
 
 ```{r setup, include=TRUE, echo=TRUE, eval=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-# install.package("BiocManager")
-# library(BiocManager)
-# 
-# # Bioconductor packages
-# if (!requireNamespace("BiocManager", quietly = TRUE))
-#     install.packages("BiocManager")
-# 
-# BiocManager::install("tidyverse")
-# BiocManager::install("factoextra")
-# BiocManager::install("msdata")
-# BiocManager::install("mzR")
-# BiocManager::install("rhdf5")
-# BiocManager::install("rpx")
-# BiocManager::install("MsCoreUtils")
-# BiocManager::install("QFeatures")
-# BiocManager::install("Spectra")
-# BiocManager::install("ProtGenerics")
-# BiocManager::install("PSMatch")
-# BiocManager::install("pheatmap")
-# BiocManager::install("limma")
-# BiocManager::install("MSnID")
-# BiocManager::install("rawrr")
-# BiocManager::install("cleaver")
-# remotes::install_github("RforMassSpectrometry/SpectraVis")
-# 
-# install.packages("tidyverse")
-# install.packages("sageR")
+install.packages("BiocManager")
+ library(BiocManager)
+ 
+ # Bioconductor packages
+ if (!requireNamespace("BiocManager", quietly = TRUE))
+     install.packages("BiocManager")
+ 
+ BiocManager::install("tidyverse")
+ BiocManager::install("factoextra")
+ BiocManager::install("msdata")
+ BiocManager::install("mzR")
+ BiocManager::install("rhdf5")
+ BiocManager::install("rpx")
+ BiocManager::install("MsCoreUtils")
+ BiocManager::install("QFeatures")
+ BiocManager::install("Spectra")
+ BiocManager::install("ProtGenerics")
+ BiocManager::install("PSMatch")
+ BiocManager::install("pheatmap")
+ BiocManager::install("limma")
+ BiocManager::install("MSnID")
+ BiocManager::install("rawrr")
+ BiocManager::install("cleaver")
+ remotes::install_github("RforMassSpectrometry/SpectraVis")
+ 
+ install.packages("tidyverse")
+ install.packages("sageR")
 ```
 
 ## Review some points about MS data
